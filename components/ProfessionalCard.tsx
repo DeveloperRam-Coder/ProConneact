@@ -1,72 +1,80 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
+import { TouchableOpacity, Text } from './styled';
+import { Professional } from '../types';
 
-type ProfessionalProps = {
-  professional: {
-    id: string;
-    name: string;
-    rating: number;
-    specialty: string;
-  };
-};
-
-export const ProfessionalCard = ({ professional }: ProfessionalProps) => {
-  return (
-    <TouchableOpacity style={styles.card}>
-      <View style={styles.header}>
-        <Text style={styles.name}>{professional.name}</Text>
-        <View style={styles.ratingContainer}>
-          <MaterialIcons name="star" size={16} color="#FFD700" />
-          <Text style={styles.ratingText}>{professional.rating}</Text>
-        </View>
-      </View>
-      <Text style={styles.specialty}>{professional.specialty}</Text>
-      <TouchableOpacity style={styles.bookButton}>
-        <Text style={styles.bookButtonText}>Book Now</Text>
-      </TouchableOpacity>
-    </TouchableOpacity>
-  );
-};
+interface ProfessionalCardProps {
+  professional: Professional;
+  onPress: (professional: Professional) => void;
+  onBook: (professional: Professional) => void;
+}
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 16, // mb-4
-    padding: 16, // p-4
-    borderWidth: 1,
-    borderColor: '#E5E7EB', // Tailwind's gray-200
-    borderRadius: 8, // rounded-lg
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  header: {
-    flexDirection: 'row', // flex-row
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8, // mb-2
-  },
+  flexRow: { flexDirection: 'row', alignItems: 'center' },
+  avatar: { width: 64, height: 64, borderRadius: 32, marginRight: 16 },
+  container: { flex: 1 },
   name: {
-    fontSize: 18, // text-lg
-    fontWeight: '600', // font-semibold
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  ratingText: {
-    marginLeft: 4, // ml-1
-  },
-  specialty: {
-    color: '#4B5563', // text-gray-600
-    marginBottom: 8, // mb-2
-  },
-  bookButton: {
-    backgroundColor: '#3B82F6', // bg-primary (example blue)
-    paddingVertical: 8, // py-2
-    paddingHorizontal: 16, // px-4
-    borderRadius: 6, // rounded-md
-    alignSelf: 'flex-start', // self-start
-  },
-  bookButtonText: {
-    color: '#fff', // text-white
-    fontWeight: '500', // font-medium
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1F2937',
+    marginBottom: 4,
   },
 });
+
+export const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
+  professional,
+  onPress,
+  onBook,
+}) => (
+  <TouchableOpacity style={styles.card} onPress={() => onPress(professional)}>
+    <View style={styles.flexRow}>
+      <Image
+        source={{ uri: professional.avatar }}
+        style={styles.avatar}
+        contentFit="cover"
+        transition={200}
+      />
+      <View style={styles.container}>
+        <Text style={styles.name}>{professional.name}</Text>
+        <Text>{professional.profession}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <MaterialIcons name="star" size={16} color="#FFD700" />
+          <Text>
+            {professional.rating} ({professional.reviews} reviews)
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View>
+      <Text numberOfLines={2}>{professional.description}</Text>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginVertical: 8 }}>
+        {professional.specialties.map((specialty, index) => (
+          <View key={index} style={{ backgroundColor: '#F3F4F6', padding: 4, borderRadius: 4 }}>
+            <Text>{specialty}</Text>
+          </View>
+        ))}
+      </View>
+      <TouchableOpacity 
+        onPress={() => onBook(professional)}
+        style={{ backgroundColor: '#3B82F6', padding: 12, borderRadius: 8, alignItems: 'center' }}
+      >
+        <Text style={{ color: '#ffffff', fontWeight: '600' }}>
+          Book Now - ${professional.price}/hr
+        </Text>
+      </TouchableOpacity>
+    </View>
+  </TouchableOpacity>
+);

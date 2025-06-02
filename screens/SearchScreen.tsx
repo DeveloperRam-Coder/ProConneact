@@ -1,46 +1,111 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, FlatList, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Text, TouchableOpacity } from '../components/styled';
 import { ProfessionalCard } from '../components/ProfessionalCard';
+import { Professional } from '../types';
 
 export const SearchScreen = () => {
-  const professionals = [
-    { id: '1', name: 'John Barber', rating: 4.9, specialty: 'Haircuts', price: '$30', distance: '0.5 mi' },
-    { id: '2', name: 'Dr. Smith', rating: 4.8, specialty: 'General Medicine', price: '$100', distance: '1.2 mi' },
-    { id: '3', name: 'Math Tutor', rating: 4.7, specialty: 'Algebra', price: '$50', distance: '0.8 mi' },
-    { id: '4', name: 'Fitness Coach', rating: 4.6, specialty: 'Weight Loss', price: '$70', distance: '1.5 mi' },
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+
+  const filters = [
+    { id: 'rating', label: 'Top Rated' },
+    { id: 'price_low', label: 'Price: Low to High' },
+    { id: 'price_high', label: 'Price: High to Low' },
+    { id: 'availability', label: 'Available Today' },
   ];
+
+  // Mock data - in real app, this would come from an API
+  const professionals: Professional[] = [
+    {
+      id: '1',
+      name: 'John Barber',
+      profession: 'Professional Barber',
+      rating: 4.9,
+      reviews: 127,
+      price: 30,
+      avatar: 'https://example.com/avatar1.jpg',
+      description: 'Experienced barber specializing in modern and classic cuts',
+      specialties: ['Fades', 'Beard Trimming', 'Hot Towel Shave'],
+      availability: {
+        'Monday': ['9:00', '10:00', '11:00'],
+        'Tuesday': ['9:00', '10:00', '11:00'],
+      }
+    },
+  ];
+
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+    // TODO: Implement search logic with API integration
+  };
+
+  const handleFilter = (filterId: string) => {
+    setSelectedFilter(selectedFilter === filterId ? null : filterId);
+    // TODO: Implement filter logic with API integration
+  };
+
+  const handleProfessionalPress = (professional: Professional) => {
+    // TODO: Navigate to professional detail screen
+    console.log('Navigate to professional:', professional.id);
+  };
+
+  const handleBookPress = (professional: Professional) => {
+    // TODO: Navigate to booking screen
+    console.log('Navigate to booking:', professional.id);
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchBar}>
-        <MaterialIcons name="search" size={24} color="gray" />
+      <View style={styles.searchContainer}>
+        <MaterialIcons name="search" size={24} color="#6B7280" />
         <TextInput
-          placeholder="Search for professionals"
           style={styles.searchInput}
+          placeholder="Search professionals..."
+          value={searchQuery}
+          onChangeText={handleSearch}
+          placeholderTextColor="#6B7280"
         />
-        <TouchableOpacity>
-          <MaterialIcons name="mic" size={24} color="#1E88E5" />
-        </TouchableOpacity>
       </View>
 
-      <View style={styles.filterRow}>
-        <TouchableOpacity style={styles.filterButton}>
-          <Text style={styles.filterText}>Specialty</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.filterButton}>
-          <Text style={styles.filterText}>Distance</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.filterButton}>
-          <Text style={styles.filterText}>Price</Text>
-        </TouchableOpacity>
-      </View>
+      <FlatList
+        horizontal
+        data={filters}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.filtersContainer}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={[
+              styles.filterButton,
+              selectedFilter === item.id && styles.filterButtonSelected
+            ]}
+            onPress={() => handleFilter(item.id)}
+          >
+            <Text
+              style={[
+                styles.filterText,
+                selectedFilter === item.id && styles.filterTextSelected
+              ]}
+            >
+              {item.label}
+            </Text>
+          </TouchableOpacity>
+        )}
+        keyExtractor={item => item.id}
+      />
 
-      <ScrollView>
-        {professionals.map((professional) => (
-          <ProfessionalCard key={professional.id} professional={professional} />
-        ))}
-      </ScrollView>
+      <FlatList
+        data={professionals}
+        renderItem={({ item }) => (
+          <ProfessionalCard
+            professional={item}
+            onPress={handleProfessionalPress}
+            onBook={handleBookPress}
+          />
+        )}
+        keyExtractor={item => item.id}
+        contentContainerStyle={styles.resultsContainer}
+      />
     </View>
   );
 };
@@ -48,35 +113,45 @@ export const SearchScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff', // bg-white
-    padding: 16, // p-4
+    backgroundColor: '#fff',
+    padding: 16,
   },
-  searchBar: {
+  searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16, // mb-4
-    backgroundColor: '#F3F4F6', // gray-100
-    borderRadius: 12, // rounded-lg
+    backgroundColor: '#F3F4F6',
+    borderRadius: 12,
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    marginBottom: 16,
   },
   searchInput: {
     flex: 1,
-    marginLeft: 8,
+    height: 48,
+    marginLeft: 12,
     fontSize: 16,
+    color: '#111827',
   },
-  filterRow: {
-    flexDirection: 'row',
-    marginBottom: 16, // mb-4
+  filtersContainer: {
+    paddingBottom: 16,
   },
   filterButton: {
-    marginRight: 8, // mr-2
-    paddingVertical: 4, // py-1
-    paddingHorizontal: 12, // px-3
-    backgroundColor: '#A78BFA', // bg-secondary (e.g., purple-400)
-    borderRadius: 9999, // rounded-full
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: '#F3F4F6',
+    marginRight: 8,
+  },
+  filterButtonSelected: {
+    backgroundColor: '#3B82F6',
   },
   filterText: {
-    color: '#2563EB', // text-primary (blue-600)
+    fontSize: 14,
+    color: '#4B5563',
+  },
+  filterTextSelected: {
+    color: '#FFFFFF',
+  },
+  resultsContainer: {
+    paddingBottom: 16,
   },
 });
