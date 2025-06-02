@@ -1,42 +1,80 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
+import { StyleSheet } from 'react-native';
+import { Category } from '../types';
+import { TouchableOpacity, Text } from './styled';
 
-type CategoryProps = {
-  category: {
-    id: string;
-    name: string;
-    icon: string;
-  };
-};
-
-export const CategoryButton = ({ category }: CategoryProps) => {
-  return (
-    <TouchableOpacity style={styles.button}>
-      <View style={styles.iconWrapper}>
-        <MaterialIcons name={category.icon} size={24} color="#1E88E5" />
-      </View>
-      <Text style={styles.text}>{category.name}</Text>
-    </TouchableOpacity>
-  );
-};
+interface CategoryButtonProps {
+  category: Category;
+  onPress: (category: Category) => void;
+  isSelected?: boolean;
+}
 
 const styles = StyleSheet.create({
-  button: {
-    marginRight: 16,
+  container: {
     alignItems: 'center',
+    marginRight: 16,
   },
-  iconWrapper: {
+  button: {
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: '#E3F2FD',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 8,
+    marginBottom: 4,
+  },
+  buttonSelected: {
+    backgroundColor: '#3B82F6',
+  },
+  buttonUnselected: {
+    backgroundColor: '#F3F4F6',
   },
   text: {
     fontSize: 14,
-    fontWeight: '500',
-    color: '#000',
   },
+  textSelected: {
+    color: '#1E88E5',
+    fontWeight: '500',
+  },
+  textUnselected: {
+    color: '#757575',
+    fontWeight: '400',
+  }
 });
+
+export const CategoryButton: React.FC<CategoryButtonProps> = ({ 
+  category, 
+  onPress, 
+  isSelected = false 
+}) => {
+  return (
+    <TouchableOpacity
+      style={[
+        styles.container,
+        { opacity: isSelected ? 1 : 0.7 }
+      ]}
+      onPress={() => onPress(category)}
+    >
+      <TouchableOpacity
+        style={[
+          styles.button,
+          isSelected ? styles.buttonSelected : styles.buttonUnselected
+        ]}
+      >
+        <MaterialIcons 
+          name={category.icon as keyof typeof MaterialIcons['glyphMap']}
+          size={24} 
+          color={isSelected ? '#ffffff' : '#1E88E5'} 
+        />
+      </TouchableOpacity>
+      <Text
+        style={[
+          styles.text,
+          isSelected ? styles.textSelected : styles.textUnselected
+        ]}
+      >
+        {category.name}
+      </Text>
+    </TouchableOpacity>
+  );
+};

@@ -1,27 +1,74 @@
-import React from 'react';
-import { View, Text, ScrollView, FlatList, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, ScrollView, FlatList, StyleSheet } from 'react-native';
 import { CategoryButton } from '../components/CategoryButton';
 import { ProfessionalCard } from '../components/ProfessionalCard';
+import { Text } from '../components/styled';
+import { Category, Professional } from '../types';
 
 export const HomeScreen = () => {
-  const categories = [
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const categories: Category[] = [
     { id: '1', name: 'Barber', icon: 'content-cut' },
     { id: '2', name: 'Tutor', icon: 'school' },
     { id: '3', name: 'Doctor', icon: 'medical-services' },
     { id: '4', name: 'Trainer', icon: 'fitness-center' },
   ];
 
-  const professionals = [
-    { id: '1', name: 'John Barber', rating: 4.9, specialty: 'Haircuts' },
-    { id: '2', name: 'Dr. Smith', rating: 4.8, specialty: 'General Medicine' },
-    { id: '3', name: 'Math Tutor', rating: 4.7, specialty: 'Algebra' },
-    { id: '4', name: 'Fitness Coach', rating: 4.6, specialty: 'Weight Loss' },
+  const professionals: Professional[] = [
+    {
+      id: '1',
+      name: 'John Barber',
+      profession: 'Professional Barber',
+      rating: 4.9,
+      reviews: 127,
+      price: 30,
+      avatar: 'https://example.com/avatar1.jpg',
+      description: 'Experienced barber specializing in modern and classic cuts',
+      specialties: ['Fades', 'Beard Trimming', 'Hot Towel Shave'],
+      availability: {
+        'Monday': ['9:00', '10:00', '11:00'],
+        'Tuesday': ['9:00', '10:00', '11:00'],
+      }
+    },
+    {
+      id: '2',
+      name: 'Dr. Sarah Smith',
+      profession: 'General Physician',
+      rating: 4.8,
+      reviews: 243,
+      price: 100,
+      avatar: 'https://example.com/avatar2.jpg',
+      description: 'Board-certified physician with 15 years of experience',
+      specialties: ['General Medicine', 'Preventive Care', 'Family Medicine'],
+      availability: {
+        'Monday': ['9:00', '10:00', '11:00'],
+        'Wednesday': ['13:00', '14:00', '15:00'],
+      }
+    }
   ];
+
+  const handleCategoryPress = (category: Category) => {
+    setSelectedCategory(selectedCategory === category.id ? null : category.id);
+  };
+
+  const handleProfessionalPress = (professional: Professional) => {
+    // TODO: Navigate to professional detail screen
+    console.log('Navigate to professional:', professional.id);
+  };
+
+  const handleBookPress = (professional: Professional) => {
+    // TODO: Navigate to booking screen
+    console.log('Navigate to booking:', professional.id);
+  };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.greeting}>Hello, User!</Text>
+        <View>
+          <Text style={styles.greeting}>Hello, User!</Text>
+          <Text style={styles.subGreeting}>Find the perfect professional</Text>
+        </View>
         <View style={styles.avatarPlaceholder} />
       </View>
 
@@ -30,20 +77,35 @@ export const HomeScreen = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.categoriesContainer}
-        contentContainerStyle={{ paddingRight: 16 }}
+        contentContainerStyle={styles.categoriesContent}
       >
         {categories.map((category) => (
-          <CategoryButton key={category.id} category={category} />
+          <CategoryButton
+            key={category.id}
+            category={category}
+            onPress={handleCategoryPress}
+            isSelected={selectedCategory === category.id}
+          />
         ))}
       </ScrollView>
 
-      <Text style={styles.sectionTitle}>Top-Rated Pros</Text>
+      <View style={styles.professionalsHeader}>
+        <Text style={styles.sectionTitle}>Top-Rated Pros</Text>
+        <Text style={styles.seeAll}>See All</Text>
+      </View>
+      
       <FlatList
         data={professionals}
-        renderItem={({ item }) => <ProfessionalCard professional={item} />}
+        renderItem={({ item }) => (
+          <ProfessionalCard
+            professional={item}
+            onPress={handleProfessionalPress}
+            onBook={handleBookPress}
+          />
+        )}
         keyExtractor={(item) => item.id}
         scrollEnabled={false}
-        contentContainerStyle={{ paddingBottom: 16 }}
+        contentContainerStyle={styles.professionalsContent}
       />
     </ScrollView>
   );
@@ -52,31 +114,55 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff', // bg-white
-    padding: 16, // p-4
+    backgroundColor: '#fff',
+    padding: 16,
   },
   header: {
-    flexDirection: 'row', // flex-row
-    justifyContent: 'space-between', // justify-between
-    alignItems: 'center', // items-center
-    marginBottom: 24, // mb-6
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
   },
   greeting: {
-    fontSize: 24, // text-2xl
-    fontWeight: '700', // font-bold
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#111827',
+  },
+  subGreeting: {
+    fontSize: 16,
+    color: '#6B7280',
+    marginTop: 4,
   },
   avatarPlaceholder: {
-    width: 40, // w-10
-    height: 40, // h-10
-    borderRadius: 20, // rounded-full
-    backgroundColor: '#3B82F6', // primary color (blue)
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#e5e7eb',
   },
   sectionTitle: {
-    fontSize: 18, // text-lg
-    fontWeight: '600', // font-semibold
-    marginBottom: 16, // mb-4
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#111827',
+    marginBottom: 16,
   },
   categoriesContainer: {
-    marginBottom: 24, // mb-6
+    marginBottom: 24,
+  },
+  categoriesContent: {
+    paddingRight: 16,
+  },
+  professionalsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  seeAll: {
+    fontSize: 14,
+    color: '#3B82F6',
+    fontWeight: '500',
+  },
+  professionalsContent: {
+    paddingBottom: 16,
   },
 });
