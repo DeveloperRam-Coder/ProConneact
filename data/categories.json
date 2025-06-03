@@ -1,0 +1,76 @@
+{
+  "categories": [
+    {
+      "id": "1",
+      "name": "Barber",
+      "icon": "content-cut",
+      "description": "Professional haircuts and grooming services"
+    },
+    {
+      "id": "2",
+      "name": "Tutor",
+      "icon": "school",
+      "description": "Academic and skill-based tutoring"
+    },
+    {
+      "id": "3",
+      "name": "Doctor",
+      "icon": "medical-services",
+      "description": "Medical consultation and healthcare"
+    },
+    {
+      "id": "4",
+      "name": "Trainer",
+      "icon": "fitness-center",
+      "description": "Personal fitness and wellness coaching"
+    },
+    {
+      "id": "5",
+      "name": "Plumber",
+      "icon": "plumbing",
+      "description": "Plumbing repairs and installations"
+    },
+    {
+      "id": "6",
+      "name": "Electrician",
+      "icon": "electrical-services",
+      "description": "Electrical repairs and installations"
+    },
+    {
+      "id": "7",
+      "name": "Chef",
+      "icon": "restaurant",
+      "description": "Private cooking and catering services"
+    },
+    {
+      "id": "8",
+      "name": "Massage",
+      "icon": "spa",
+      "description": "Professional massage therapy"
+    },
+    {
+      "id": "9",
+      "name": "Cleaner",
+      "icon": "cleaning-services",
+      "description": "Home and office cleaning services"
+    },
+    {
+      "id": "10",
+      "name": "Painter",
+      "icon": "format-paint",
+      "description": "Interior and exterior painting services"
+    },
+    {
+      "id": "11",
+      "name": "Designer",
+      "icon": "design-services",
+      "description": "Graphic and interior design services"
+    },
+    {
+      "id": "12",
+      "name": "Photographer",
+      "icon": "camera-alt",
+      "description": "Professional photography services"
+    }
+  ]
+}

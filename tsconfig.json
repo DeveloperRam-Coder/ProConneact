@@ -6,13 +6,13 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node",
+    "allowJs": true,
+    "moduleResolution": "bundler",
     "jsx": "react-native",
     "baseUrl": ".",
     "paths": {
       "*": ["*", "*.ios", "*.android"]
     },
-    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
     "noEmit": true,

@@ -1,0 +1,183 @@
+{
+  "professionals": [
+    {
+      "id": "1",
+      "name": "John Barber",
+      "profession": "Professional Barber",
+      "categoryId": "1",
+      "rating": 4.9,
+      "reviews": 127,
+      "price": 30,
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
+      "description": "Experienced barber specializing in modern and classic cuts",
+      "specialties": ["Fades", "Beard Trimming", "Hot Towel Shave"],
+      "availability": {
+        "Monday": ["9:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+        "Tuesday": ["9:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+        "Wednesday": ["9:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+        "Thursday": ["9:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+        "Friday": ["9:00", "10:00", "11:00", "14:00", "15:00", "16:00"]
+      },
+      "location": "Downtown",
+      "experience": "10 years",
+      "languages": ["English", "Spanish"]
+    },
+    {
+      "id": "2",
+      "name": "Sarah Johnson",
+      "profession": "Mathematics Tutor",
+      "categoryId": "2",
+      "rating": 4.8,
+      "reviews": 89,
+      "price": 45,
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=female",
+      "description": "Experienced math tutor specializing in high school and college level mathematics",
+      "specialties": ["Calculus", "Algebra", "Statistics"],
+      "availability": {
+        "Monday": ["15:00", "16:00", "17:00", "18:00"],
+        "Wednesday": ["15:00", "16:00", "17:00", "18:00"],
+        "Friday": ["15:00", "16:00", "17:00", "18:00"]
+      },
+      "location": "Online/In-person",
+      "experience": "8 years",
+      "languages": ["English"]
+    },
+    {
+      "id": "3",
+      "name": "Dr. Emily Chen",
+      "profession": "General Physician",
+      "categoryId": "3",
+      "rating": 4.9,
+      "reviews": 156,
+      "price": 100,
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=female",
+      "description": "Board-certified physician with expertise in family medicine",
+      "specialties": ["Family Medicine", "Preventive Care", "Chronic Disease Management"],
+      "availability": {
+        "Monday": ["9:00", "10:00", "11:00", "14:00", "15:00"],
+        "Tuesday": ["9:00", "10:00", "11:00", "14:00", "15:00"],
+        "Thursday": ["9:00", "10:00", "11:00", "14:00", "15:00"]
+      },
+      "location": "Medical Center",
+      "experience": "12 years",
+      "languages": ["English", "Mandarin"]
+    },
+    {
+      "id": "2",
+      "name": "Dr. Sarah Smith",
+      "profession": "General Physician",
+      "rating": 4.8,
+      "reviews": 243,
+      "price": 100,
+      "avatar": "https://example.com/avatar2.jpg",
+      "description": "Board-certified physician with 15 years of experience",
+      "specialties": ["General Medicine", "Preventive Care", "Family Medicine"],
+      "availability": {
+        "Monday": ["9:00", "10:00", "11:00"],
+        "Wednesday": ["13:00", "14:00", "15:00"]
+      }
+    },
+    {
+      "id": "3",
+      "name": "Emily Johnson",
+      "profession": "Math Tutor",
+      "rating": 4.7,
+      "reviews": 89,
+      "price": 45,
+      "avatar": "https://example.com/avatar3.jpg",
+      "description": "Experienced mathematics tutor specializing in high school and college level courses",
+      "specialties": ["Calculus", "Algebra", "Statistics"],
+      "availability": {
+        "Monday": ["15:00", "16:00", "17:00"],
+        "Thursday": ["14:00", "15:00", "16:00"]
+      }
+    },
+    {
+      "id": "4",
+      "name": "Mike Anderson",
+      "profession": "Fitness Trainer",
+      "categoryId": "4",
+      "rating": 4.7,
+      "reviews": 94,
+      "price": 60,
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
+      "description": "Certified personal trainer specializing in strength and conditioning",
+      "specialties": ["Weight Training", "HIIT", "Nutrition Planning"],
+      "availability": {
+        "Monday": ["7:00", "8:00", "9:00", "17:00", "18:00", "19:00"],
+        "Tuesday": ["7:00", "8:00", "9:00", "17:00", "18:00", "19:00"],
+        "Wednesday": ["7:00", "8:00", "9:00", "17:00", "18:00", "19:00"],
+        "Thursday": ["7:00", "8:00", "9:00", "17:00", "18:00", "19:00"],
+        "Friday": ["7:00", "8:00", "9:00", "17:00", "18:00", "19:00"]
+      },
+      "location": "Fitness Center",
+      "experience": "6 years",
+      "languages": ["English"]
+    },
+    {
+      "id": "5",
+      "name": "Robert Martinez",
+      "profession": "Plumber",
+      "categoryId": "5",
+      "rating": 4.8,
+      "reviews": 112,
+      "price": 75,
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
+      "description": "Licensed plumber with expertise in residential and commercial plumbing",
+      "specialties": ["Repairs", "Installations", "Emergency Services"],
+      "availability": {
+        "Monday": ["8:00", "9:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+        "Tuesday": ["8:00", "9:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+        "Wednesday": ["8:00", "9:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+        "Thursday": ["8:00", "9:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+        "Friday": ["8:00", "9:00", "10:00", "11:00", "14:00", "15:00", "16:00"]
+      },
+      "location": "Greater Metro Area",
+      "experience": "15 years",
+      "languages": ["English", "Spanish"]
+    },
+    {
+      "id": "6",
+      "name": "Jennifer Lee",
+      "profession": "Chef",
+      "categoryId": "7",
+      "rating": 4.9,
+      "reviews": 78,
+      "price": 120,
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=female",
+      "description": "Professional chef specializing in fine dining and catering",
+      "specialties": ["Fine Dining", "Catering", "Cooking Classes"],
+      "availability": {
+        "Tuesday": ["10:00", "11:00", "14:00", "15:00", "16:00", "17:00"],
+        "Wednesday": ["10:00", "11:00", "14:00", "15:00", "16:00", "17:00"],
+        "Thursday": ["10:00", "11:00", "14:00", "15:00", "16:00", "17:00"],
+        "Friday": ["10:00", "11:00", "14:00", "15:00", "16:00", "17:00"],
+        "Saturday": ["10:00", "11:00", "14:00", "15:00", "16:00", "17:00"]
+      },
+      "location": "Mobile Service",
+      "experience": "9 years",
+      "languages": ["English", "Korean"]
+    },
+    {
+      "id": "7",
+      "name": "David Wilson",
+      "profession": "Photographer",
+      "categoryId": "12",
+      "rating": 4.8,
+      "reviews": 95,
+      "price": 150,
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
+      "description": "Professional photographer specializing in portraits and events",
+      "specialties": ["Portraits", "Events", "Commercial"],
+      "availability": {
+        "Monday": ["9:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+        "Wednesday": ["9:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+        "Friday": ["9:00", "10:00", "11:00", "14:00", "15:00", "16:00"],
+        "Saturday": ["10:00", "11:00", "14:00", "15:00", "16:00"]
+      },
+      "location": "Studio/On-location",
+      "experience": "7 years",
+      "languages": ["English", "French"]
+    }
+  ]
+}

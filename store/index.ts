@@ -4,14 +4,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User, Professional, Category } from '../types';
 
 // Custom storage adapter for AsyncStorage
-const zustandStorage: StateStorage = {
-  getItem: async (name: string): Promise<string | null> => {
-    return await AsyncStorage.getItem(name);
+const zustandStorage = {
+  getItem: async (name: string) => {
+    const value = await AsyncStorage.getItem(name);
+    return value ? JSON.parse(value) : null;
   },
-  setItem: async (name: string, value: string): Promise<void> => {
-    await AsyncStorage.setItem(name, value);
+  setItem: async (name: string, value: unknown) => {
+    await AsyncStorage.setItem(name, JSON.stringify(value));
   },
-  removeItem: async (name: string): Promise<void> => {
+  removeItem: async (name: string) => {
     await AsyncStorage.removeItem(name);
   },
 };
@@ -25,8 +26,7 @@ interface AuthState {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>()(
-  persist(
+export const useAuthStore = create<AuthState>()(  persist(
     (set) => ({
       user: null,
       token: null,
@@ -36,7 +36,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'auth-storage',
-      // storage: zustandStorage,
+      storage: zustandStorage,
     }
   )
 );
@@ -91,10 +91,9 @@ export const useSettingsStore = create<SettingsState>()(
       toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
       setNotificationsEnabled: (enabled: boolean) => set({ notificationsEnabled: enabled }),
       setLanguage: (language: string) => set({ language }),
-    }),
-    {
+    }),    {
       name: 'settings-storage',
-      // storage: zustandStorage,
+      storage: zustandStorage,
     }
   )
 );
