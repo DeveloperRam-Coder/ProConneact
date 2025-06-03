@@ -1,18 +1,11 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Professional, Booking, Category, User } from '../types';
+import { getData } from './data';
 
 // Demo credentials for testing:
 // email: demo@proconnect.com
 // password: demo123
-
-// Demo user data
-const DEMO_USER: User = {
-  id: 'demo-user-1',
-  name: 'Demo User',
-  email: 'demo@proconnect.com',
-  phone: '+1234567890',
-  avatar: 'https://ui-avatars.com/api/?name=Demo+User'
-};
 
 const DEMO_TOKEN = 'demo-jwt-token';
 
@@ -28,13 +21,27 @@ const mockApiResponse = (data: any) => {
   });
 };
 
+// Add mock API handlers
+const mockApi = {
+  login: () => {
+    const user = getData.getUserById('user1');
+    return { user, token: DEMO_TOKEN };
+  },
+  getCategories: () => getData.categories(),
+  getProfessionals: () => getData.professionals(),
+  getBookings: () => getData.bookings(),
+  getUser: (id: string) => getData.getUserById(id),
+};
 
 // Add a request interceptor to include auth token
 api.interceptors.request.use(async (config) => {
   try {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const authStorage = await AsyncStorage.getItem('auth-storage');
+    if (authStorage) {
+      const { state } = JSON.parse(authStorage);
+      if (state.token) {
+        config.headers.Authorization = `Bearer ${state.token}`;
+      }
     }
   } catch (error) {
     console.error('Error reading token from AsyncStorage:', error);
@@ -47,10 +54,7 @@ export const auth = {
   login: async (email: string, password: string) => {
     // Demo login
     if (email === 'demo@proconnect.com' && password === 'demo123') {
-      return mockApiResponse({
-        user: DEMO_USER,
-        token: DEMO_TOKEN,
-      });
+      return mockApiResponse(mockApi.login());
     }
     const response = await api.post('/auth/login', { email, password });
     return response.data;
@@ -58,10 +62,7 @@ export const auth = {
   register: async (userData: Partial<User>) => {
     // Demo register
     if (userData.email === 'demo@proconnect.com') {
-      return mockApiResponse({
-        user: DEMO_USER,
-        token: DEMO_TOKEN,
-      });
+      return mockApiResponse(mockApi.login());
     }
     const response = await api.post('/auth/register', userData);
     return response.data;
@@ -69,6 +70,21 @@ export const auth = {
   logout: async () => {
     const response = await api.post('/auth/logout');
     return response.data;
+  },
+  checkAuth: async () => {
+    try {
+      const authStorage = await AsyncStorage.getItem('auth-storage');
+      if (authStorage) {
+        const { state } = JSON.parse(authStorage);
+        if (state.token) {
+          return { token: state.token };
+        }
+      }
+      return { token: null };
+    } catch (error) {
+      console.error('Error checking auth:', error);
+      return { token: null };
+    }
   },
 };
 
@@ -79,10 +95,20 @@ export const professionals = {
     search?: string;
     sort?: string;
   }) => {
+    // In demo mode, return mock data
+    if (process.env.NODE_ENV === 'development') {
+      return mockApiResponse(mockApi.getProfessionals());
+    }
     const response = await api.get<Professional[]>('/professionals', { params });
     return response.data;
   },
   getById: async (id: string) => {
+    // In demo mode, return mock data
+    if (process.env.NODE_ENV === 'development') {
+      const professionals = mockApi.getProfessionals();
+      const professional = professionals.find(p => p.id === id);
+      return mockApiResponse(professional);
+    }
     const response = await api.get<Professional>(`/professionals/${id}`);
     return response.data;
   },
@@ -97,6 +123,10 @@ export const professionals = {
 // Categories
 export const categories = {
   getAll: async () => {
+    // In demo mode, return mock data
+    if (process.env.NODE_ENV === 'development') {
+      return mockApiResponse(mockApi.getCategories());
+    }
     const response = await api.get<Category[]>('/categories');
     return response.data;
   },
@@ -105,10 +135,22 @@ export const categories = {
 // Bookings
 export const bookings = {
   create: async (bookingData: Partial<Booking>) => {
+    if (process.env.NODE_ENV === 'development') {
+      const mockBookings = mockApi.getBookings();
+      const newBooking = {
+        ...bookingData,
+        id: `booking-${mockBookings.length + 1}`,
+        status: 'confirmed'
+      };
+      return mockApiResponse(newBooking);
+    }
     const response = await api.post<Booking>('/bookings', bookingData);
     return response.data;
   },
   getAll: async () => {
+    if (process.env.NODE_ENV === 'development') {
+      return mockApiResponse(mockApi.getBookings());
+    }
     const response = await api.get<Booking[]>('/bookings');
     return response.data;
   },

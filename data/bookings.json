@@ -1,0 +1,44 @@
+{
+  "bookings": [
+    {
+      "id": "1",
+      "professionalId": "1",
+      "userId": "user1",
+      "service": "Haircut & Styling",
+      "date": "2024-05-30",
+      "time": "10:00 AM",
+      "status": "confirmed",
+      "price": 30
+    },
+    {
+      "id": "2",
+      "professionalId": "2",
+      "userId": "user1",
+      "service": "General Checkup",
+      "date": "2024-06-15",
+      "time": "2:00 PM",
+      "status": "pending",
+      "price": 100
+    },
+    {
+      "id": "3",
+      "professionalId": "3",
+      "userId": "user1",
+      "service": "Math Tutoring Session",
+      "date": "2024-05-28",
+      "time": "3:00 PM",
+      "status": "completed",
+      "price": 45
+    },
+    {
+      "id": "4",
+      "professionalId": "1",
+      "userId": "user1",
+      "service": "Beard Trim",
+      "date": "2024-05-25",
+      "time": "11:00 AM",
+      "status": "cancelled",
+      "price": 20
+    }
+  ]
+}

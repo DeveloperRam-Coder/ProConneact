@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MaterialIcons } from '@expo/vector-icons';
+import React, { useState, useEffect } from 'react';
 
 import { HomeScreen } from './screens/HomeScreen';
 import { SearchScreen } from './screens/SearchScreen';
@@ -12,6 +13,7 @@ import { BookingsScreen } from './screens/BookingsScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
 import { useSettingsStore, useAuthStore } from './store';
 import { AuthNavigator } from './navigation/AuthNavigator';
+import { auth } from './services/api';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -19,7 +21,32 @@ const queryClient = new QueryClient();
 
 export default function App() {
   const { darkMode } = useSettingsStore();
-  const { token } = useAuthStore();
+  const { token, setToken } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await auth.checkAuth();
+        if (response.token) {
+          setToken(response.token);
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#3B82F6" />
+      </View>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -27,13 +54,15 @@ export default function App() {
         <StatusBar style={darkMode ? 'light' : 'dark'} />
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Main" component={TabNavigator} />
-          <Stack.Screen
-            name="Auth"
-            component={AuthNavigator}
-            options={{
-              presentation: 'modal',
-            }}
-          />
+          {!token && (
+            <Stack.Screen 
+              name="Auth" 
+              component={AuthNavigator}
+              options={{
+                presentation: 'modal',
+              }} 
+            />
+          )}
         </Stack.Navigator>
       </NavigationContainer>
     </QueryClientProvider>
@@ -85,6 +114,7 @@ const TabNavigator = () => {
         component={HomeScreen}
         options={{
           title: 'Home',
+          tabBarLabel: ({ color }) => <Text style={{ color }}>Home</Text>,
         }}
       />
       <Tab.Screen 
@@ -92,13 +122,15 @@ const TabNavigator = () => {
         component={SearchScreen}
         options={{
           title: 'Search',
+          tabBarLabel: ({ color }) => <Text style={{ color }}>Search</Text>,
         }}
       />
       <Tab.Screen 
         name="Bookings" 
         component={BookingsScreen}
         options={{
-          title: 'My Bookings',
+          title: 'Bookings',
+          tabBarLabel: ({ color }) => <Text style={{ color }}>Bookings</Text>,
         }}
       />
       <Tab.Screen 
@@ -106,6 +138,7 @@ const TabNavigator = () => {
         component={ProfileScreen}
         options={{
           title: 'Profile',
+          tabBarLabel: ({ color }) => <Text style={{ color }}>Profile</Text>,
         }}
       />
     </Tab.Navigator>

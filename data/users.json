@@ -1,0 +1,85 @@
+{
+  "users": [
+    {
+      "id": "user1",
+      "name": "Demo User",
+      "email": "demo@proconnect.com",
+      "phone": "+1234567890",
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=pixel",
+      "address": "123 Main St, City, State 12345",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "darkMode": false
+      },
+      "paymentMethods": [
+        {
+          "id": "pm1",
+          "type": "credit_card",
+          "last4": "4242",
+          "brand": "visa",
+          "expiryMonth": 12,
+          "expiryYear": 2025
+        }
+      ],
+      "favoriteCategories": ["1", "4", "7"],
+      "favoriteProfessionals": ["1", "4", "6"],
+      "memberSince": "2025-01-15",
+      "lastLogin": "2025-06-03T08:30:00Z"
+    },
+    {
+      "id": "user2",
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "phone": "+1987654321",
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=female",
+      "address": "456 Oak Ave, City, State 12345",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": false,
+        "darkMode": true
+      },
+      "paymentMethods": [
+        {
+          "id": "pm2",
+          "type": "credit_card",
+          "last4": "1234",
+          "brand": "mastercard",
+          "expiryMonth": 8,
+          "expiryYear": 2026
+        }
+      ],
+      "favoriteCategories": ["2", "3", "8"],
+      "favoriteProfessionals": ["2", "3"],
+      "memberSince": "2025-02-20",
+      "lastLogin": "2025-06-02T15:45:00Z"
+    },
+    {
+      "id": "user3",
+      "name": "Michael Johnson",
+      "email": "michael@example.com",
+      "phone": "+1122334455",
+      "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
+      "address": "789 Pine St, City, State 12345",
+      "preferences": {
+        "notifications": false,
+        "emailUpdates": true,
+        "darkMode": false
+      },
+      "paymentMethods": [
+        {
+          "id": "pm3",
+          "type": "credit_card",
+          "last4": "5678",
+          "brand": "amex",
+          "expiryMonth": 3,
+          "expiryYear": 2026
+        }
+      ],
+      "favoriteCategories": ["5", "6", "12"],
+      "favoriteProfessionals": ["5", "7"],
+      "memberSince": "2025-03-10",
+      "lastLogin": "2025-06-01T19:20:00Z"
+    }
+  ]
+}
