@@ -1,7 +1,20 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { persist, StateStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User, Professional, Category } from '../types';
+
+// Custom storage adapter for AsyncStorage
+const zustandStorage: StateStorage = {
+  getItem: async (name: string): Promise<string | null> => {
+    return await AsyncStorage.getItem(name);
+  },
+  setItem: async (name: string, value: string): Promise<void> => {
+    await AsyncStorage.setItem(name, value);
+  },
+  removeItem: async (name: string): Promise<void> => {
+    await AsyncStorage.removeItem(name);
+  },
+};
 
 // Auth Store
 interface AuthState {
@@ -23,7 +36,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'auth-storage',
-      storage: createJSONStorage(() => AsyncStorage),
+      // storage: zustandStorage,
     }
   )
 );
@@ -81,7 +94,7 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: 'settings-storage',
-      storage: createJSONStorage(() => AsyncStorage),
+      // storage: zustandStorage,
     }
   )
 );

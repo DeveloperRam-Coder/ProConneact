@@ -1,16 +1,43 @@
 import axios from 'axios';
 import { Professional, Booking, Category, User } from '../types';
 
+// Demo credentials for testing:
+// email: demo@proconnect.com
+// password: demo123
+
+// Demo user data
+const DEMO_USER: User = {
+  id: 'demo-user-1',
+  name: 'Demo User',
+  email: 'demo@proconnect.com',
+  phone: '+1234567890',
+  avatar: 'https://ui-avatars.com/api/?name=Demo+User'
+};
+
+const DEMO_TOKEN = 'demo-jwt-token';
+
 const api = axios.create({
   baseURL: 'https://api.example.com', // Replace with your actual API URL
   timeout: 10000,
 });
 
+// Mock API responses for demo testing
+const mockApiResponse = (data: any) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve({ data }), 500);
+  });
+};
+
+
 // Add a request interceptor to include auth token
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use(async (config) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  } catch (error) {
+    console.error('Error reading token from AsyncStorage:', error);
   }
   return config;
 });
@@ -18,10 +45,24 @@ api.interceptors.request.use((config) => {
 // Authentication
 export const auth = {
   login: async (email: string, password: string) => {
+    // Demo login
+    if (email === 'demo@proconnect.com' && password === 'demo123') {
+      return mockApiResponse({
+        user: DEMO_USER,
+        token: DEMO_TOKEN,
+      });
+    }
     const response = await api.post('/auth/login', { email, password });
     return response.data;
   },
   register: async (userData: Partial<User>) => {
+    // Demo register
+    if (userData.email === 'demo@proconnect.com') {
+      return mockApiResponse({
+        user: DEMO_USER,
+        token: DEMO_TOKEN,
+      });
+    }
     const response = await api.post('/auth/register', userData);
     return response.data;
   },

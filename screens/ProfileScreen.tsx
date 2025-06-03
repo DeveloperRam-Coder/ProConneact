@@ -2,6 +2,8 @@ import React from 'react';
 import { View, ScrollView, StyleSheet, Switch } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Text, TouchableOpacity } from '../components/styled';
+import { useAuthStore, useSettingsStore } from '../store';
+import { auth } from '../services/api';
 
 interface SettingItemProps {
   icon: keyof typeof MaterialIcons.glyphMap;
@@ -42,21 +44,47 @@ const SettingItem = ({
   </TouchableOpacity>
 );
 
-export const ProfileScreen = () => {
-  const handleLogout = () => {
-    // TODO: Implement logout logic
-    console.log('Logout');
+export const ProfileScreen = ({ navigation }: any) => {
+  const { user, token, logout } = useAuthStore();
+  const { toggleDarkMode, darkMode, notificationsEnabled, setNotificationsEnabled } = useSettingsStore();
+
+  const handleLogout = async () => {
+    try {
+      await auth.logout();
+      logout();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   const handleNotificationToggle = (value: boolean) => {
-    // TODO: Update notification preferences
-    console.log('Notifications:', value);
+    setNotificationsEnabled(value);
   };
 
   const handleDarkModeToggle = (value: boolean) => {
-    // TODO: Update theme preferences
-    console.log('Dark mode:', value);
+    toggleDarkMode();
   };
+
+  if (!token) {
+    return (
+      <View style={[styles.container, styles.guestContainer]}>
+        <Text style={styles.guestTitle}>Welcome to ProConnect</Text>
+        <Text style={styles.guestSubtitle}>Sign in to access your profile and bookings</Text>
+        <TouchableOpacity 
+          style={styles.authButton}
+          onPress={() => navigation.navigate('Auth', { screen: 'Login' })}
+        >
+          <Text style={styles.authButtonText}>Sign In</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.authButton, styles.registerButton]}
+          onPress={() => navigation.navigate('Auth', { screen: 'Register' })}
+        >
+          <Text style={[styles.authButtonText, styles.registerButtonText]}>Create Account</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -67,8 +95,8 @@ export const ProfileScreen = () => {
             <MaterialIcons name="edit" size={20} color="#fff" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.name}>John Doe</Text>
-        <Text style={styles.email}>john.doe@example.com</Text>
+        <Text style={styles.name}>{user?.name || 'User'}</Text>
+        <Text style={styles.email}>{user?.email || ''}</Text>
       </View>
 
       <View style={styles.section}>
@@ -77,12 +105,12 @@ export const ProfileScreen = () => {
           <SettingItem
             icon="person-outline"
             label="Edit Profile"
-            onPress={() => console.log('Edit Profile')}
+            onPress={() => navigation.navigate('EditProfile')}
           />
           <SettingItem
             icon="notifications-none"
             label="Notifications"
-            value={true}
+            value={notificationsEnabled}
             onValueChange={handleNotificationToggle}
             showArrow={false}
           />
@@ -100,7 +128,7 @@ export const ProfileScreen = () => {
           <SettingItem
             icon="dark-mode"
             label="Dark Mode"
-            value={false}
+            value={darkMode}
             onValueChange={handleDarkModeToggle}
             showArrow={false}
           />
@@ -153,6 +181,45 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  guestContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  guestTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#111827',
+  },
+  guestSubtitle: {
+    fontSize: 16,
+    color: '#6B7280',
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  authButton: {
+    backgroundColor: '#3B82F6',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+    width: '100%',
+    marginBottom: 12,
+    alignItems: 'center',
+  },
+  authButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  registerButton: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#3B82F6',
+  },
+  registerButtonText: {
+    color: '#3B82F6',
   },
   header: {
     alignItems: 'center',
