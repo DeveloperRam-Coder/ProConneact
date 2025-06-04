@@ -6,10 +6,11 @@ export interface User {
   avatar?: string;
 }
 
-export interface Professional {
+export type Professional = {
   id: string;
   name: string;
   profession: string;
+  categoryId: string;
   rating: number;
   reviews: number;
   price: number;
@@ -19,21 +20,29 @@ export interface Professional {
   availability: {
     [key: string]: string[];
   };
-}
+  location: string;
+};
 
-export interface Booking {
-  id: string;
-  professionalId: string;
-  userId: string;
-  date: string;
-  time: string;
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
-  service: string;
-  price: number;
-}
+export type RootStackParamList = {
+  MainTabs: undefined;
+  Home: undefined;
+  Search: undefined;
+  Bookings: undefined;
+  Profile: undefined;
+  ProfessionalDetail: { professional: Professional };
+  Booking: { professional: Professional };
+  Barber: undefined;
+  Tutor: undefined;
+  Doctor: undefined;
+  Trainer: undefined;
+  Login: undefined;
+  Register: undefined;
+  EditProfile: undefined;
+  ForgotPassword: undefined;
+};
 
-export interface Category {
+export type Category = {
   id: string;
   name: string;
   icon: string;
-}
+};

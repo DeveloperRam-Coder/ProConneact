@@ -2,6 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Professional, Booking, Category, User } from '../types';
 import { getData } from './data';
+import users from '../data/users.json';
 
 // Demo credentials for testing:
 // email: demo@proconnect.com
@@ -52,40 +53,56 @@ api.interceptors.request.use(async (config) => {
 // Authentication
 export const auth = {
   login: async (email: string, password: string) => {
-    // Demo login
-    if (email === 'demo@proconnect.com' && password === 'demo123') {
-      return mockApiResponse(mockApi.login());
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const user = users.users.find(u => u.email === email && u.password === password);
+    if (!user) {
+      throw new Error('Invalid email or password');
     }
-    const response = await api.post('/auth/login', { email, password });
-    return response.data;
+
+    const { password: _, ...userWithoutPassword } = user;
+    return {
+      user: userWithoutPassword,
+      token: 'dummy-token-' + user.id
+    };
   },
-  register: async (userData: Partial<User>) => {
-    // Demo register
-    if (userData.email === 'demo@proconnect.com') {
-      return mockApiResponse(mockApi.login());
+
+  register: async (data: { email: string; password: string; name: string; phoneNumber: string }) => {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const existingUser = users.users.find(u => u.email === data.email);
+    if (existingUser) {
+      throw new Error('Email already registered');
     }
-    const response = await api.post('/auth/register', userData);
-    return response.data;
+
+    const newUser = {
+      id: String(users.users.length + 1),
+      email: data.email,
+      name: data.name,
+      phoneNumber: data.phoneNumber,
+      avatar: `https://xsgames.co/randomusers/avatar.php?g=random`,
+      bookings: []
+    };
+
+    return {
+      user: newUser,
+      token: 'dummy-token-' + newUser.id
+    };
   },
-  logout: async () => {
-    const response = await api.post('/auth/logout');
-    return response.data;
-  },
+
   checkAuth: async () => {
-    try {
-      const authStorage = await AsyncStorage.getItem('auth-storage');
-      if (authStorage) {
-        const { state } = JSON.parse(authStorage);
-        if (state.token) {
-          return { token: state.token };
-        }
-      }
-      return { token: null };
-    } catch (error) {
-      console.error('Error checking auth:', error);
-      return { token: null };
-    }
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return { token: null };
   },
+
+  logout: async () => {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return true;
+  }
 };
 
 // Professionals
