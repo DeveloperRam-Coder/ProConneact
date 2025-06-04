@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, FlatList, StyleSheet } from 'react-native';
 import { CategoryButton } from '../components/CategoryButton';
 import { ProfessionalCard } from '../components/ProfessionalCard';
 import { Text } from '../components/styled';
 import { Category, Professional } from '../types';
+import { useNavigation } from '@react-navigation/native';
+import professionalData from '../data/professionals.json';
 
 export const HomeScreen = () => {
+  const navigation = useNavigation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [filteredProfessionals, setFilteredProfessionals] = useState<Professional[]>([]);
 
   const categories: Category[] = [
     { id: '1', name: 'Barber', icon: 'content-cut' },
@@ -15,51 +19,29 @@ export const HomeScreen = () => {
     { id: '4', name: 'Trainer', icon: 'fitness-center' },
   ];
 
-  const professionals: Professional[] = [
-    {
-      id: '1',
-      name: 'John Barber',
-      profession: 'Professional Barber',
-      rating: 4.9,
-      reviews: 127,
-      price: 30,
-      avatar: 'https://example.com/avatar1.jpg',
-      description: 'Experienced barber specializing in modern and classic cuts',
-      specialties: ['Fades', 'Beard Trimming', 'Hot Towel Shave'],
-      availability: {
-        'Monday': ['9:00', '10:00', '11:00'],
-        'Tuesday': ['9:00', '10:00', '11:00'],
-      }
-    },
-    {
-      id: '2',
-      name: 'Dr. Sarah Smith',
-      profession: 'General Physician',
-      rating: 4.8,
-      reviews: 243,
-      price: 100,
-      avatar: 'https://example.com/avatar2.jpg',
-      description: 'Board-certified physician with 15 years of experience',
-      specialties: ['General Medicine', 'Preventive Care', 'Family Medicine'],
-      availability: {
-        'Monday': ['9:00', '10:00', '11:00'],
-        'Wednesday': ['13:00', '14:00', '15:00'],
-      }
+  // Filter professionals based on selected category
+  useEffect(() => {
+    if (selectedCategory) {
+      const filtered = professionalData.professionals.filter(
+        (prof) => prof.categoryId === selectedCategory
+      );
+      setFilteredProfessionals(filtered);
+    } else {
+      setFilteredProfessionals(professionalData.professionals);
     }
-  ];
+  }, [selectedCategory]);
 
   const handleCategoryPress = (category: Category) => {
     setSelectedCategory(selectedCategory === category.id ? null : category.id);
+    navigation.navigate(category.name as never);
   };
 
   const handleProfessionalPress = (professional: Professional) => {
-    // TODO: Navigate to professional detail screen
-    console.log('Navigate to professional:', professional.id);
+    navigation.navigate('ProfessionalDetail', { professional });
   };
 
   const handleBookPress = (professional: Professional) => {
-    // TODO: Navigate to booking screen
-    console.log('Navigate to booking:', professional.id);
+    navigation.navigate('Booking', { professional });
   };
 
   return (
@@ -95,7 +77,7 @@ export const HomeScreen = () => {
       </View>
       
       <FlatList
-        data={professionals}
+        data={filteredProfessionals}
         renderItem={({ item }) => (
           <ProfessionalCard
             professional={item}
