@@ -39,6 +39,7 @@ export type RootStackParamList = {
   Register: undefined;
   EditProfile: undefined;
   ForgotPassword: undefined;
+  Auth: { screen: string; params?: any };
 };
 
 export type Category = {

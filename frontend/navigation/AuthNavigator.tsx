@@ -4,6 +4,7 @@ import { LoginScreen } from '../screens/auth/LoginScreen';
 import { RegisterScreen } from '../screens/auth/RegisterScreen';
 import { EditProfileScreen } from '../screens/auth/EditProfileScreen';
 import { ForgotPasswordScreen } from '../screens/auth/ForgotPasswordScreen';
+import { BookingScreen } from '../screens/BookingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,12 +43,18 @@ export const AuthNavigator = () => {
         options={{
           title: 'Edit Profile',
         }}
-      />
-      <Stack.Screen
+      />      <Stack.Screen
         name="ForgotPassword"
         component={ForgotPasswordScreen}
         options={{
           title: 'Reset Password',
+        }}
+      />
+      <Stack.Screen
+        name="Booking"
+        component={BookingScreen}
+        options={{
+          title: 'Book Appointment',
         }}
       />
     </Stack.Navigator>

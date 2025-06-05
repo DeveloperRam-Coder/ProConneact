@@ -51,11 +51,12 @@ export const ProfessionalDetailScreen = ({ route, navigation }: any) => {
             </View>
           </View>
         ))}
-      </View>
-
-      <TouchableOpacity
+      </View>      <TouchableOpacity
         style={styles.bookButton}
-        onPress={() => navigation.navigate('Booking', { professional })}
+        onPress={() => navigation.navigate('Auth', { 
+          screen: 'Booking',
+          params: { professional }
+        })}
       >
         <Text style={styles.bookButtonText}>Book Appointment</Text>
       </TouchableOpacity>

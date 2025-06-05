@@ -2,7 +2,18 @@ import React, { useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Text, TouchableOpacity } from '../components/styled';
-import { Booking } from '../types';
+// Define Booking type here if not exported from '../types'
+export interface Booking {
+  id: string;
+  professionalId: string;
+  userId: string;
+  service: string;
+  date: string;
+  time: string;
+  status: 'confirmed' | 'pending' | 'completed' | 'cancelled';
+  price: number;
+}
+// import { Booking } from '../types';
 
 type BookingStatus = 'upcoming' | 'past' | 'cancelled';
 

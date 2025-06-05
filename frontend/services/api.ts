@@ -11,7 +11,7 @@ import users from '../data/users.json';
 const DEMO_TOKEN = 'demo-jwt-token';
 
 const api = axios.create({
-  baseURL: 'https://api.example.com', // Replace with your actual API URL
+  baseURL: 'http://localhost:5000/api/auth', // Replace with your actual API URL
   timeout: 10000,
 });
 
