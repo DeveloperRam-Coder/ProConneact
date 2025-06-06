@@ -1,8 +1,9 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Professional, Booking, Category, User } from '../types';
+import { Professional, Category, User } from '../types';
 import { getData } from './data';
 import users from '../data/users.json';
+import { Booking } from 'screens/BookingsScreen';
 
 // Demo credentials for testing:
 // email: demo@proconnect.com
@@ -56,14 +57,14 @@ export const auth = {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    const user = users.users.find(u => u.email === email && u.password === password);
+    const user = users.users.find(u => u.email === email);
     if (!user) {
       throw new Error('Invalid email or password');
     }
 
-    const { password: _, ...userWithoutPassword } = user;
+    // In demo, skip password check since user data has no password field
     return {
-      user: userWithoutPassword,
+      user,
       token: 'dummy-token-' + user.id
     };
   },
